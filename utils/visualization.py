@@ -90,7 +90,16 @@ class BaseVisualizer(object):
             os.mkdir(parent_path)
         file_name = '{:06d}.png'.format(file_index)
 
-        imageio.imwrite(os.path.join(parent_path, file_name), flow_map, format='PNG-FI')
+        # imageio.imwrite(os.path.join(parent_path, file_name), flow_map, format='PNG-FI')
+
+    def save_flow_est(self, seq_name: str, flow: numpy.ndarray, file_index: int):
+
+        save_path_flow =  os.path.join(
+            self.submission_path,
+            seq_name
+        )
+        filename = '{}_{}.npy'.format(seq_name,str(file_index).zfill(4))
+        numpy.save(os.path.join(save_path_flow,filename),flow)
 
 class FlowVisualizerEvents(BaseVisualizer):
     def __init__(self, dataloader, save_path, clamp_flow=True, additional_args=None):
@@ -204,6 +213,7 @@ class DsecFlowVisualizer(BaseVisualizer):
                     flow=batch['flow_est'][batch_idx].clone().cpu().numpy(),
                     file_index=int(batch['file_index'][batch_idx].item()),
                 )
+
             if batch['visualize'][batch_idx]:
                 sequence_name = self.additional_args['name_mapping'][int(batch['name_map'][batch_idx].item())]
                 # Visualize Flow
@@ -221,6 +231,11 @@ class DsecFlowVisualizer(BaseVisualizer):
                     batch=batch,
                     batch_idx=batch_idx,
                     sequence_name=sequence_name
+                )
+                self.save_flow_est(
+                    seq_name=sequence_name,
+                    flow=batch['flow_est'][batch_idx].clone().cpu().numpy(),
+                    file_index=int(batch['file_index'][batch_idx].item()),
                 )
 
 def save_tensor(filepath, tensor):

@@ -34,7 +34,7 @@ def unzip(file_: Path, delete_zip: bool=True, skip: bool=True) -> Path:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('output_directory')
+    parser.add_argument('output_directory', default= "/home/ytian/event_motion/data/Datasets/DSEC")
 
     args = parser.parse_args()
 

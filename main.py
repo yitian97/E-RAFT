@@ -136,16 +136,18 @@ def test(args):
     test._test()
 
 if __name__ == '__main__':
-    config_path = "config/config_test.json"
+    config_path = "config/dsec_standard.json"
     # Argument Parser
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--path', type=str, help="Dataset path", required=True)
-    parser.add_argument('-d', '--dataset', default="dsec", type=str, help="Which dataset to use: ([dsec]/mvsec)")
+    # parser.add_argument('-p', '--path', default="/home/ytian/event_motion/data/Datasets/DSEC",
+    #                     type=str, help="Dataset path")
+    parser.add_argument('-p', '--path', default="/home/ytian/event_motion/data/Datasets/MVSEC/mvsec_outdoor_day_1_20Hz", type=str, help="Dataset path")
+    parser.add_argument('-d', '--dataset', default="mvsec", type=str, help="Which dataset to use: ([dsec]/mvsec)")
     parser.add_argument('-f', '--frequency', default=20, type=int, help="Evaluation frequency of MVSEC dataset ([20]/45) Hz")
     parser.add_argument('-t', '--type', default='warm_start', type=str, help="Evaluation type ([warm_start]/standard)")
     parser.add_argument('-v', '--visualize', action='store_true', help='Provide this argument s.t. DSEC results are visualized. MVSEC experiments are always visualized.')
     parser.add_argument('-n', '--num_workers', default=0, type=int, help='How many sub-processes to use for data loading')
     args = parser.parse_args()
-
+    # args.visualize = True
     # Run Test Script
     test(args)
